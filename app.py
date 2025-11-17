@@ -59,8 +59,8 @@ async def on_chat_start():
     rag_chain=create_retrieval_chain(retriever_with_history, question_answer_chain)
     cl.user_session.set("rag_chain", rag_chain)
 
-question_answer_chain = create_stuff_documents_chain(llm, qa_prompt)
-rag_chain=create_retrieval_chain(retriever_with_history, question_answer_chain)
+# question_answer_chain = create_stuff_documents_chain(llm, qa_prompt)
+# rag_chain=create_retrieval_chain(retriever_with_history, question_answer_chain)
 
 @cl.on_message
 async def on_message(message: cl.Message):
@@ -75,22 +75,22 @@ async def on_message(message: cl.Message):
         await msg.stream_token(chunk)
 
     await msg.send()
-import textwrap 
-from langchain_core.messages import HumanMessage
-chat_history = []
-question = "What are effective solutions for reducing agricultural runoff?"
-ai_msg_1 = rag_chain.invoke({"input": question, "chat_history": chat_history})
-chat_history.extend([HumanMessage(content=question), ai_msg_1["answer"]])
-print(textwrap.fill(ai_msg_1["answer"], width=100))
-second_question = "Does it help reduce extinction of aquatic ecosystems?"
+# import textwrap 
+# from langchain_core.messages import HumanMessage
+# chat_history = []
+# question = "What are effective solutions for reducing agricultural runoff?"
+# ai_msg_1 = rag_chain.invoke({"input": question, "chat_history": chat_history})
+# chat_history.extend([HumanMessage(content=question), ai_msg_1["answer"]])
+# print(textwrap.fill(ai_msg_1["answer"], width=100))
+# second_question = "Does it help reduce extinction of aquatic ecosystems?"
 
-ai_msg_2 = rag_chain.invoke({"input": second_question, "chat_history": chat_history})
-print(textwrap.fill(ai_msg_2["answer"], width=100))
-third_question = "What countries will benefit from these solutions?"
+# ai_msg_2 = rag_chain.invoke({"input": second_question, "chat_history": chat_history})
+# print(textwrap.fill(ai_msg_2["answer"], width=100))
+# third_question = "What countries will benefit from these solutions?"
 
-ai_msg_3 = rag_chain.invoke({"input": third_question, "chat_history": chat_history})
-print(textwrap.fill(ai_msg_3["answer"], width=100))
-fourth_question = "Which endangered species would be beneficial?"
+# ai_msg_3 = rag_chain.invoke({"input": third_question, "chat_history": chat_history})
+# print(textwrap.fill(ai_msg_3["answer"], width=100))
+# fourth_question = "Which endangered species would be beneficial?"
 
-ai_msg_4 = rag_chain.invoke({"input": fourth_question, "chat_history": chat_history})
-print(textwrap.fill(ai_msg_4["answer"], width=100))
+# ai_msg_4 = rag_chain.invoke({"input": fourth_question, "chat_history": chat_history})
+# print(textwrap.fill(ai_msg_4["answer"], width=100))
