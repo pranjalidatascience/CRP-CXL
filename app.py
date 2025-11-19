@@ -61,6 +61,20 @@ async def on_chat_start():
             ("human", "{input}"),
         ]
     )
+    qa_system_prompt = """
+    You are an assistant for question answering.
+    Use the following retrieved context to answer the user's question.
+
+    {context}
+
+    Keep answers concise (max 6 sentences). 
+    If the answer is not available, say 'I don't know'.
+    """
+
+    qa_prompt = ChatPromptTemplate.from_messages([
+        ("system", qa_system_prompt),
+        ("human", "{input}")
+    ])
     
     retriever_with_history = create_history_aware_retriever(
     llm, retriever, prompt
@@ -80,7 +94,8 @@ async def on_chat_start():
     #         ("human", "{input}")
     #     ]
     # )
-    question_answer_chain = create_stuff_documents_chain(llm, prompt)
+    question_answer_chain = create_stuff_documents_chain(llm, qa_prompt)
+
 
     rag_chain=create_retrieval_chain(retriever_with_history, question_answer_chain)
     
@@ -99,6 +114,8 @@ async def on_message(message: cl.Message):
         config=RunnableConfig(callbacks=[cl.LangchainCallbackHandler()]),
     ):
         await msg.stream_token(chunk)
+        
+            # Example of how you might pass the context
 
     await msg.send()
 
