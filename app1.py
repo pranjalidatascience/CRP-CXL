@@ -4,7 +4,6 @@ from dotenv import load_dotenv, find_dotenv
 
 # Load .env
 _ = load_dotenv(find_dotenv())
-
 OPENAI_API_KEY = os.environ["OPENAI_API_KEY"]
 
 # LangChain / OpenAI imports
@@ -19,66 +18,64 @@ from langchain.schema import StrOutputParser
 import chainlit as cl
 from langchain.schema.runnable.config import RunnableConfig
 
-# ---------- Setup LLM, Embeddings, Vector DB ----------
+# ---------- Setup LLM & Embeddings ----------
 llm = ChatOpenAI(model="gpt-3.5-turbo", openai_api_key=OPENAI_API_KEY)
-
 embeddings = OpenAIEmbeddings(openai_api_key=OPENAI_API_KEY, model="text-embedding-3-small")
 
-# Load existing FAISS index
+# Load FAISS index
 DB_PATH = "../faiss_index"
 db = FAISS.load_local(DB_PATH, embeddings, allow_dangerous_deserialization=True)
-
 retriever = db.as_retriever(search_type="similarity", search_kwargs={"k": 6})
 
-# ---------- Prompts ----------
-# Reformulation prompt
-reformulation_system = """Given the chat history and a recent user question,
-generate a standalone question that can be answered without the chat history.
-DO NOT answer it — only reformulate it."""
+# ---------- PROMPTS (NOW ALL USE input) ----------
+# Reformulation prompt REQUIRED VARIABLES: chat_history, input
 reformulation_prompt = ChatPromptTemplate.from_messages(
     [
-        ("system", reformulation_system),
+        ("system", """Rewrite the user's latest message into a standalone question 
+that makes sense without chat history. Do NOT answer it."""),
         MessagesPlaceholder(variable_name="chat_history"),
-        ("human", "{question}"),
+        ("human", "{input}")
     ]
 )
 
-# QA prompt
-qa_system_prompt = """
-You are an assistant that answers user questions using the retrieved context below.
+# QA prompt → MUST use {input}, not {question}
+qa_prompt = ChatPromptTemplate.from_messages(
+    [
+        ("system", """
+Use the context below to answer the user's question.
 
 {context}
 
-Use the context to answer the question. Keep answers concise (max 6 sentences).
-If the answer is not present, say "I don't know".
-"""
-
-qa_prompt = ChatPromptTemplate.from_messages(
-    [
-        ("system", qa_system_prompt),
-        ("human", "{question}"),
+Keep answers concise (max 6 sentences).
+If the answer cannot be found, say "I don't know."
+"""),
+        ("human", "{input}")
     ]
 )
 
-# ---------- RAG Chains ----------
+# ---------- RAG CHAIN ----------
+# history-aware retriever now matches variables: input & chat_history
 retriever_with_history = create_history_aware_retriever(
-    llm, retriever, reformulation_prompt
+    llm=llm,
+    retriever=retriever,
+    # prompt=reformulation_prompt
 )
 
-# IMPORTANT FIX: unify variable names
+# Stuff doc chain: variable name MUST be input
 question_answer_chain = create_stuff_documents_chain(
-    llm,
-    qa_prompt,
-    document_variable_name="context",
-    input_variable_name="question"
+    llm=llm,
+    prompt=qa_prompt,
+    # document_variable_name="context"
+    # input_variable_name="input"
 )
 
+# Tie both together
 rag_chain = create_retrieval_chain(
     retriever_with_history,
     question_answer_chain
 )
 
-# ---------- Chainlit Handlers ----------
+# ---------- CHAINLIT EVENTS ----------
 @cl.on_chat_start
 async def on_chat_start():
     runnable = rag_chain | StrOutputParser()
@@ -91,18 +88,16 @@ async def on_message(message: cl.Message):
     runnable = cl.user_session.get("runnable")
 
     if not runnable:
-        await cl.Message(content="Chat pipeline not initialized. Restart the chat.").send()
+        await cl.Message(content="Error: Chat pipeline not initialized.").send()
         return
 
     response_msg = cl.Message(content="")
 
     try:
-        # IMPORTANT FIX: correct async streaming call
+        # Must pass the variable as input
         async for chunk in runnable.astream(
-            {"question": message.content},
-            config=RunnableConfig(
-                callbacks=[cl.LangchainCallbackHandler()]
-            )
+            {"input": message.content},
+            config=RunnableConfig(callbacks=[cl.LangchainCallbackHandler()])
         ):
             await response_msg.stream_token(chunk)
 
