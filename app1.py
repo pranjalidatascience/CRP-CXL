@@ -24,90 +24,91 @@ llm = ChatOpenAI(model="gpt-3.5-turbo", openai_api_key=OPENAI_API_KEY)
 
 embeddings = OpenAIEmbeddings(openai_api_key=OPENAI_API_KEY, model="text-embedding-3-small")
 
-# Load your existing FAISS index (adjust path if needed)
+# Load existing FAISS index
 DB_PATH = "../faiss_index"
 db = FAISS.load_local(DB_PATH, embeddings, allow_dangerous_deserialization=True)
 
-# Retriever config
 retriever = db.as_retriever(search_type="similarity", search_kwargs={"k": 6})
 
 # ---------- Prompts ----------
-# 1) Reformulation prompt used by the history-aware retriever
+# Reformulation prompt
 reformulation_system = """Given the chat history and a recent user question,
 generate a standalone question that can be answered without the chat history.
-DO NOT answer it — only reformulate or return it as-is."""
+DO NOT answer it — only reformulate it."""
 reformulation_prompt = ChatPromptTemplate.from_messages(
     [
         ("system", reformulation_system),
         MessagesPlaceholder(variable_name="chat_history"),
-        ("human", "{input}"),
+        ("human", "{question}"),
     ]
 )
 
-# 2) QA prompt that MUST include {context} (retrieved docs) and {input}
+# QA prompt
 qa_system_prompt = """
 You are an assistant that answers user questions using the retrieved context below.
 
 {context}
 
 Use the context to answer the question. Keep answers concise (max 6 sentences).
-If the answer is not present in the context, say "I don't know".
+If the answer is not present, say "I don't know".
 """
+
 qa_prompt = ChatPromptTemplate.from_messages(
     [
         ("system", qa_system_prompt),
-        ("human", "{input}"),
+        ("human", "{question}"),
     ]
 )
 
-# ---------- Build chains ----------
-# History-aware retriever (handles reformulation + retrieval)
-retriever_with_history = create_history_aware_retriever(llm, retriever, reformulation_prompt)
+# ---------- RAG Chains ----------
+retriever_with_history = create_history_aware_retriever(
+    llm, retriever, reformulation_prompt
+)
 
-# Document combine / QA chain (uses qa_prompt which includes {context})
-question_answer_chain = create_stuff_documents_chain(llm, qa_prompt)
+# IMPORTANT FIX: unify variable names
+question_answer_chain = create_stuff_documents_chain(
+    llm,
+    qa_prompt,
+    document_variable_name="context",
+    input_variable_name="question"
+)
 
-# RAG chain
-# Note: create_retrieval_chain expects retriever (or retriever-like) + combine_docs chain
-rag_chain = create_retrieval_chain(retriever_with_history, question_answer_chain)
+rag_chain = create_retrieval_chain(
+    retriever_with_history,
+    question_answer_chain
+)
 
-# ---------- Chainlit handlers ----------
+# ---------- Chainlit Handlers ----------
 @cl.on_chat_start
 async def on_chat_start():
-    """
-    Prepare and store a runnable RAG pipeline in the user session.
-    The runnable will take {"input": "<user question>"} as input.
-    """
-    # The rag_chain is already configured with the reformulation step and QA prompt.
-    # Wrap with StrOutputParser so runnable.stream() yields strings.
     runnable = rag_chain | StrOutputParser()
     cl.user_session.set("runnable", runnable)
+    await cl.Message(content="Hello! Ask me anything.").send()
 
 
 @cl.on_message
 async def on_message(message: cl.Message):
-    """
-    Handle an incoming user message by invoking the runnable pipeline and streaming tokens back.
-    IMPORTANT: pass {"input": message.content} because our prompts expect the variable {question}.
-    """
     runnable = cl.user_session.get("runnable")
-    if runnable is None:
-        await cl.Message(content="Chat pipeline not initialized. Please restart the chat.").send()
+
+    if not runnable:
+        await cl.Message(content="Chat pipeline not initialized. Restart the chat.").send()
         return
 
-    # Prepare a placeholder message to stream tokens into
     response_msg = cl.Message(content="")
 
-    # Stream the runnable's output; pass {"input": ...}
     try:
-        async for chunk in cl.make_async(runnable.stream)({"input": message.content},
-                                                         config=RunnableConfig(callbacks=[cl.LangchainCallbackHandler()])):
+        # IMPORTANT FIX: correct async streaming call
+        async for chunk in runnable.astream(
+            {"question": message.content},
+            config=RunnableConfig(
+                callbacks=[cl.LangchainCallbackHandler()]
+            )
+        ):
             await response_msg.stream_token(chunk)
+
     except Exception as e:
-        # In case of error, send a short error message
         await response_msg.send()
         await cl.Message(content=f"Error: {e}").send()
         return
 
-    # Finalize/send the streamed response
     await response_msg.send()
