@@ -1,31 +1,394 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Smart Solutions for a World Crisis</title>
-  <link rel="stylesheet" href="style.css"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Smart Solutions for a World Crisis</title>
+
+    <!-- Use your uploaded theme CSS -->
+    <link href="tooplate-minimal-white-style.css" rel="stylesheet">
+
+    <style>
+        /* small helper for visible placeholders */
+        .placeholder {
+            color: #b30000;
+            font-weight: 700;
+            background: rgba(179,0,0,0.04);
+            padding: 0.06em 0.2em;
+            border-radius: 3px;
+        }
+
+        /* minor content tweaks */
+        .hero-image {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #000;
+            display: block;
+            margin: 20px auto 10px;
+            object-fit: cover;
+        }
+
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        .small-note {
+            font-size: 0.95rem;
+            color: #333;
+        }
+
+        .kpi {
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .cta-row {
+            display:flex;
+            gap:12px;
+            justify-content:center;
+            margin-top:20px;
+        }
+
+        .badge {
+            display:inline-block;
+            border:1px solid #000;
+            padding:6px 10px;
+            font-size:12px;
+            letter-spacing:1px;
+        }
+
+        /* responsive fallback for the two-col */
+        @media (max-width:900px){
+            .two-col { grid-template-columns: 1fr; }
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <img src="assets/logo.png" alt="Logo" class="logo"/>
-    <h1>Conservation Chatbot</h1>
-  </header>
 
-  <main>
-    <div id="chat-container">
-      <div id="chat-box"></div>
-      <div class="input-container">
-        <input type="text" id="user-input" placeholder="Ask me about species extinction..."/>
-        <button id="send-btn">Send</button>
-      </div>
-    </div>
-  </main>
+    <!-- Navigation (keeps IDs used by your JS) -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="#home" class="logo">ESI · AI</a>
+            <div class="menu-toggle" id="menuToggle">
+                <span></span><span></span><span></span>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home" class="nav-link">HOME</a></li>
+                <li><a href="#about" class="nav-link">ABOUT</a></li>
+                <li><a href="#project" class="nav-link">PROJECT</a></li>
+                <li><a href="#methods" class="nav-link">METHODS</a></li>
+                <li><a href="#results" class="nav-link">RESULTS</a></li>
+                <li><a href="#future" class="nav-link">FUTURE</a></li>
+                <li><a href="#resources" class="nav-link">RESOURCES</a></li>
+                <li><a href="#contact" class="nav-link">CONTACT</a></li>
+            </ul>
+        </div>
+    </nav>
 
-  <footer>
-    <p>Powered by AI | Created for CRP-CXL Project</p>
-  </footer>
+    <!-- HERO / HOME -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Smart Solutions for a World Crisis</h1>
+            <p class="subtitle">Enhancing the Extinction Solutions Index (ESI) with NLP & LLMs — a Conservation X Labs collaboration</p>
 
-  <script src="script.js"></script>
+            <!-- placeholder hero image: replace with high-impact image (Unsplash recommended) -->
+            <img class="hero-image" src="assets/hero-animals-placeholder.jpg" alt="Animals; global biodiversity" />
+            <p class="small-note">A visual reminder of what's at stake — imagine a world without these species.</p>
+
+            <div class="two-col" style="margin-top:18px;">
+                <div>
+                    <h3>Quick overview</h3>
+                    <p>
+                        This project builds an AI-enabled pipeline to gather, synthesize, and rank conservation solutions around the world using semantic search and a retrieval-augmented LLM. The aim is to support the Extinction Solutions Index (ESI) by making verified solution information searchable and comparable for conservation practitioners and policymakers.
+                    </p>
+                    <p>
+                        The prototype focuses on agricultural pollution (precision agriculture case study) and evaluates model outputs using the spatially-explicit STAR (Species Threat Abatement & Restoration) metric.
+                    </p>
+                </div>
+
+                <div>
+                    <h3>The conservation problem</h3>
+                    <p>
+                        Species globally are at risk from drivers like land-use change, pollution, climate change, invasive species, and direct exploitation. There is an urgent need to compile and synthesize solution evidence so practitioners can scale effective interventions quickly and equitably.
+                    </p>
+
+                    <h4>How this supports CXL’s mission</h4>
+                    <p>
+                        Provides an operational, research-grade tool to identify high-impact conservation strategies, streamline evidence synthesis, and support data-driven decision making across ESI priorities.
+                    </p>
+
+                    <h4>Role of AI</h4>
+                    <p>AI (NLP + LLMs) automates extraction of intervention details, costs, outcomes and context; semantic search enables rapid retrieval that is grounded in evidence.</p>
+                </div>
+            </div>
+
+            <div class="cta-row" style="margin-top:20px;">
+                <a class="cta-button" href="#project">Explore the Project</a>
+                <a class="cta-button" href="#about">Meet the Team</a>
+                <a class="cta-button" href="#results">View Results</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="about">
+        <div class="container">
+            <h2>About the Project</h2>
+
+            <div class="black-line"></div>
+
+            <div class="two-col">
+                <div>
+                    <h3>Project Context</h3>
+                    <p>
+                        Biodiversity loss is accelerating and conservation evidence is scattered across papers, reports, and gray literature. This project demonstrates how NLP and LLMs can ingest heterogeneous text sources and surface evidence about interventions that reduce extinction risk.
+                    </p>
+
+                    <h4>Why the ESI needs this</h4>
+                    <p>
+                        The Extinction Solutions Index benefits from automated, scalable methods to gather comparable metrics (e.g., potential STAR contributions) across interventions so ESI can recommend scalable, high-impact solutions.
+                    </p>
+                </div>
+
+                <div>
+                    <h3>Collaborators</h3>
+                    <p class="small-note">Partner organizations and institutional support</p>
+
+                    <ul>
+                        <li><strong>Conservation X Labs (CXL)</strong> — host organization for ESI; provided data context and mentorship.</li>
+                        <li><strong>Institute for Integrative Conservation (IIC), William & Mary</strong> — academic sponsorship, domain expertise, and field context.</li>
+                        <li><strong>William & Mary</strong> — academic support, faculty mentorship (Prof. Chen and others).</li>
+                    </ul>
+
+                    <p><em>Interdisciplinary collaboration:</em> The team merged data science (embeddings, vector DBs, LLMs) with conservation science (STAR metric, IUCN threat data, case studies).</p>
+                </div>
+            </div>
+
+            <div class="black-line"></div>
+
+            <h3>Personal role</h3>
+            <p>
+                <strong>Pranjali Gupta</strong> — CRP student and data lead. Responsibilities included literature compilation, embedding experimentation, FAISS vector database configuration, prompt engineering, building the RAG pipeline, and implementing STAR-metric–aware evaluation prompts. Primary focus: bridging AI & conservation to produce usable decision-support outputs.
+            </p>
+        </div>
+    </section>
+
+    <!-- PROJECT OVERVIEW -->
+    <section id="project" class="services">
+        <div class="container">
+            <h2>Project Overview</h2>
+            <div class="black-line"></div>
+
+            <h3>Problem statement</h3>
+            <p>
+                The global challenge: species extinction is driven by multiple interacting threats. There is no single, scalable repository that synthesizes evidence on actionable interventions and their likely conservation impact. Practitioners need accessible, trustworthy summaries to prioritize interventions.
+            </p>
+
+            <h3>Why LLMs</h3>
+            <p>
+                LLMs accelerate reading and summarizing of unstructured text, while semantic search via embeddings allows retrieval of the most relevant portions of documents. Together, they enable a fast, evidence-grounded response to practitioner queries about interventions.
+            </p>
+
+            <div class="two-col" style="margin-top:18px;">
+                <div>
+                    <h4>Project Goals</h4>
+                    <ul>
+                        <li>Use LLMs + semantic search to organize and retrieve conservation solutions.</li>
+                        <li>Build a pipeline that evaluates outputs using the STAR metric.</li>
+                        <li>Produce a reproducible prototype and documentation for CXL integration.</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4>Timeline (Spring → Summer)</h4>
+                    <p><span class="badge">Spring</span> Proposal, literature review, prompt design, data scoping.</p>
+                    <p><span class="badge">Summer</span> Embeddings & FAISS setup, RAG pipeline, STAR evaluation prompts, case study (precision agriculture), testing, and demo.</p>
+                </div>
+            </div>
+
+            <h4>Key research questions</h4>
+            <ul>
+                <li>How can AI organize conservation solutions efficiently and transparently?</li>
+                <li>How can STAR metric components be integrated into prompts to produce ranked outputs for places + threats?</li>
+                <li>How well does the pipeline perform on a case study (precision agriculture) compared to domain expectations?</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- METHODS & WORKFLOW -->
+    <section id="methods" class="about">
+        <div class="container">
+            <h2>Methods & Workflow</h2>
+            <div class="black-line"></div>
+
+            <h3>Data preparation</h3>
+            <p>
+                Sources compiled: peer-reviewed articles, technical reports, NGO field reports, and ESI-curated solution summaries. Key items extracted per document: intervention type, geographic context, reported outcomes, costs (if available), and metrics of biodiversity response.
+            </p>
+            <p><strong>Embedding strategy:</strong> OpenAI text embeddings (e.g., text-embedding-3-small) were used to vectorize passages; chunking parameters tuned to balance context vs. retrieval precision (note: you had an issue where only 4 chunks appeared — TODO to inspect chunking/overlap settings).</p>
+
+            <h3>Vector DB & semantic search</h3>
+            <p>
+                FAISS local index was selected for fast, offline similarity search during prototype development. Documents were split into overlapping chunks, embedded, and stored with metadata (title, source, year, location tags).
+            </p>
+
+            <h3>LLM integration & prompt engineering</h3>
+            <p>
+                A Retrieval-Augmented Generation (RAG) pipeline uses a reformulation prompt (to create standalone questions from chat history), a retriever (FAISS), and a document-combining chain to feed retrieved context into the LLM with concise answer constraints. Special prompts were built to compute / assemble STAR metric inputs for each candidate solution.
+            </p>
+
+            <h3>System architecture (visual)</h3>
+            <p class="small-note">
+                Visual: <em>User query → reformulation → FAISS retriever → LLM (with retrieved contexts + STAR prompts) → scored outputs → ranked solutions.</em>
+            </p>
+            <p class="small-note">You can replace this with an SVG/diagram image in the final site.</p>
+        </div>
+    </section>
+
+    <!-- RESULTS & REFLECTION -->
+    <section id="results" class="services">
+        <div class="container">
+            <h2>Results, Insights & Reflection</h2>
+            <div class="black-line"></div>
+
+            <h3>Functional achievements</h3>
+            <ul>
+                <li>Configured FAISS index and embedding pipeline.</li>
+                <li>Built a RAG pipeline (reformulation prompt + retrieval + LLM answer chain) and tested with precision agriculture case queries.</li>
+                <li>Created prompts and scaffolding to compute STAR metric components per candidate solution (needs IUCN species-per-location and %restorable-AOH data to fully compute).</li>
+            </ul>
+
+            <h3>Case study — Precision Agriculture</h3>
+            <p>
+                Example: Query — "Which precision agriculture interventions reduce nutrient runoff and benefit freshwater species?" → Pipeline retrieves intervention studies, summarizes the evidence (reduction in fertilizer use, measured water quality outcomes), and estimates STAR-related contributions based on available metadata.
+            </p>
+
+            <h3>Visuals & demos</h3>
+            <p>Include screenshots of:</p>
+            <ol>
+                <li>FAISS index stats / embedding counts (e.g., number of documents & chunks)</li>
+                <li>Example RAG query + retrieved contexts</li>
+                <li>LLM answer with STAR metric breakdown</li>
+            </ol>
+            <p class="small-note placeholder">REPLACE_WITH_SCREENSHOTS: Add screenshots from your local runs or notebook outputs.</p>
+
+            <h3>Lessons learned</h3>
+            <ul>
+                <li>Chunking and overlap size strongly affect retrieval quality — debugged during summer (your note: only 4 chunks were being returned; need to inspect embed pipeline).</li>
+                <li>Variable names and prompt variable consistency are crucial when wiring LangChain chains (debugged during development).</li>
+                <li>Domain integration requires concrete data (IUCN, %restorable habitat per species, threat-contribution matrices) to move from prototype to operational scoring.</li>
+            </ul>
+
+            <h3>Skills gained</h3>
+            <ul>
+                <li>Embedding & FAISS configuration, semantic search tuning.</li>
+                <li>LLM prompt engineering and RAG pipeline construction.</li>
+                <li>Project management and interdisciplinary collaboration between data science and conservation practitioners.</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- FUTURE WORK -->
+    <section id="future" class="about">
+        <div class="container">
+            <h2>Future Work & Recommendations</h2>
+            <div class="black-line"></div>
+
+            <h3>Technical improvements</h3>
+            <ul>
+                <li>Expand the document database (more case studies, gov reports, NGO monitoring data).</li>
+                <li>Automate ingestion of IUCN & GBIF records for location-specific species lists and AOH data.</li>
+                <li>Improve prompt optimization and add model-ensemble checks for robustness.</li>
+                <li>Build a front-end interface (web app / dashboard) for non-technical users to query and download ranked solutions.</li>
+            </ul>
+
+            <h3>Conservation impact</h3>
+            <p>
+                Integrating the pipeline with ESI can accelerate identification of high-impact interventions, inform funding priorities, and help practitioners scale tested solutions with localized STAR-based impact estimates.
+            </p>
+        </div>
+    </section>
+
+    <!-- RESOURCES & REFERENCES -->
+    <section id="resources" class="services">
+        <div class="container">
+            <h2>Resources & References</h2>
+            <div class="black-line"></div>
+
+            <h3>Documentation links</h3>
+            <ul>
+                <li>Project Google Drive: <span class="placeholder">REPLACE_WITH_GOOGLE_DRIVE_LINK</span></li>
+                <li>Code repository (GitHub): <span class="placeholder">REPLACE_WITH_GITHUB_REPO_LINK</span></li>
+                <li>Project presentation slides: <span class="placeholder">REPLACE_WITH_SLIDES_LINK</span></li>
+            </ul>
+
+            <h3>Key literature</h3>
+            <p>Selected references used in the project (add full citations in final site):</p>
+            <ul>
+                <li>Mair et al. (2021) — STAR metric papers</li>
+                <li>Gougherty & Clipp (2024) — LLM information extraction in ecology</li>
+                <li>Reynolds et al. (2025) — AI horizon scan for conservation</li>
+                <li>Brühl & Zaller (2019) — pesticide impacts</li>
+                <li>Other project-specific literature — add full Zotero export link: <span class="placeholder">REPLACE_WITH_ZOTERO_LINK</span></li>
+            </ul>
+
+            <h3>Acknowledgments</h3>
+            <ul>
+                <li>Conservation X Labs (CXL)</li>
+                <li>Institute for Integrative Conservation (IIC)</li>
+                <li>William & Mary faculty mentors (e.g., Prof. Chen)</li>
+                <li>Local collaborators and community partners referenced in case studies</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- CONTACT / FOOTER -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2>Contact & Next steps</h2>
+
+            <div class="two-col">
+                <div>
+                    <h3>Get in touch</h3>
+                    <p>If you want to discuss the project, propose integrations with ESI, or provide data, please contact:</p>
+                    <p><strong>Pranjali Gupta</strong><br>
+                    Email: <span class="placeholder">REPLACE_WITH_EMAIL</span><br>
+                    LinkedIn: <span class="placeholder">REPLACE_WITH_LINKEDIN</span></p>
+                </div>
+
+                <div>
+                    <h3>Next steps for CXL</h3>
+                    <ol>
+                        <li>Review prototype outputs and STAR evaluation prompts.</li>
+                        <li>Provide access to IUCN / spatial species data for automated scoring.</li>
+                        <li>Define front-end requirements and user personas for the ESI dashboard.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div style="text-align:center; margin-top:20px;">
+                <a class="service-tag" href="REPLACE_WITH_GITHUB_REPO_LINK">View code (GitHub)</a>
+                <a class="service-tag" href="REPLACE_WITH_GOOGLE_DRIVE_LINK">View docs (Drive)</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>Thanks for visiting — together we can make solutions more findable and scalable. © 2025 Conservation X Labs · Institute for Integrative Conservation · William & Mary</p>
+    </footer>
+
+    <!-- Use your uploaded theme JS -->
+    <script src="tooplate-minimal-script.js"></script>
+
+    <!-- Optional small script to highlight placeholders visually in the browser -->
+    <script>
+        // Highlight placeholders so you can quickly find them
+        document.querySelectorAll('.placeholder').forEach(el => {
+            el.title = "REPLACE this placeholder with real content.";
+        });
+    </script>
 </body>
 </html>
