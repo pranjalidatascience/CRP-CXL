@@ -26,7 +26,7 @@ st.set_page_config(
 )
 
 st.title("🌿 CRP-CXL Conservation Chatbot")
-st.write("Ask any question about conservation solutions, interventions, STAR metrics, and more")
+st.write("Ask any question about conservation solutions, interventions, and more")
 
 # ---------------------------------------------------------------------
 # LLM + Embeddings (unchanged)
