@@ -3,8 +3,7 @@ python-dotenv
 openai
 faiss-cpu
 tiktoken
-langchain
-langchain-community
-langchain-core
+langchain==0.1.16
+langchain-community==0.0.29
+langchain-core==0.1.53
 langchain-openai
-langchain.chains
