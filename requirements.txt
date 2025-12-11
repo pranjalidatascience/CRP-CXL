@@ -1,9 +1,14 @@
-streamlit
-python-dotenv
-openai
-faiss-cpu
-tiktoken
+streamlit==1.37.0
+python-dotenv==1.0.1
+openai==1.35.7
+faiss-cpu==1.8.0
+tiktoken==0.7.0
+
+# --- Lock LangChain to the LAST VERSION with langchain.chains ---
 langchain==0.1.16
-langchain-community==0.0.29
 langchain-core==0.1.53
-langchain-openai
+langchain-community==0.0.29
+langchain-openai==0.0.8
+
+# (Optional) If you need async
+aiohttp==3.9.5
