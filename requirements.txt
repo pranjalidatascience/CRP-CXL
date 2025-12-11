@@ -1,16 +1,16 @@
 pip
-streamlit==1.37.0
-python-dotenv==1.0.1
-openai==1.35.7
-tiktoken==0.7.0
+streamli
+python-dotenv
+openai
+tiktoken
 faiss-cpu>=1.13.1
-tenacity==8.2.2
+tenacity
 
 # 🔥 MATCHED LANGCHAIN VERSIONS (THE LAST FULLY COMPATIBLE SET)
-langchain-core>=0.1.21,<0.2
-langchain==0.0.352
-langchain-community==0.0.20
-langchain-openai==0.0.2
+langchain-core
+langchain
+langchain-community
+langchain-openai
 
 # (Optional but safe)
-aiohttp==3.9.5
+aiohttp
