@@ -57,8 +57,12 @@ reformulation_prompt = ChatPromptTemplate.from_messages(
 qa_prompt = ChatPromptTemplate.from_messages(
     [
         ("system",
-         "Use the context below to answer the question.\n\n{context}\n\n"
-         "If unsure, say 'I don't know'. Keep answers under 6 sentences."),
+         """You are a conservation expert for answering conservation related solutions \
+            Use the following pieces of retrieved context to answer the question \
+            If you don't know the answer, just say that you don't know \
+            Use ten sentences maximum and keep the answer concise. \
+
+            {context}"""),
         ("human", "{input}")
     ]
 )
