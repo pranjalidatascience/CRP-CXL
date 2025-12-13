@@ -21,11 +21,12 @@ from langchain.schema import StrOutputParser
 st.set_page_config(
     page_title="CRP-CXL Conservation Chatbot",
     page_icon="🌿",
-    layout="wide"
+    layout="wide",
+    background_color="#e0f7fa"
 )
 
 st.title("🌿 CRP-CXL Conservation Chatbot")
-st.write("Ask any question about conservation solutions, interventions, and more")
+st.write("Ask any question about conservation solutions, extinction solutions, and more")
 
 # ---------------------------------------------------------------------
 # LLM + Embeddings (unchanged)
