@@ -21,8 +21,7 @@ from langchain.schema import StrOutputParser
 st.set_page_config(
     page_title="CRP-CXL Conservation Chatbot",
     page_icon="🌿",
-    layout="wide",
-    background_color="#e0f7fa"
+    layout="wide"
 )
 
 st.title("🌿 CRP-CXL Conservation Chatbot")
