@@ -7,9 +7,9 @@ faiss-cpu>=1.13.1
 tenacity
 
 # 🔥 MATCHED LANGCHAIN VERSIONS (THE LAST FULLY COMPATIBLE SET)
-langchain-core
-langchain
-langchain-community
+langchain>=0.1.36,<1.0
+langchain-core>=0.1.36,<1.0
+langchain-community>=0.0.20,<1.0
 langchain-openai
 
 # (Optional but safe)
