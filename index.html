@@ -178,7 +178,7 @@
                             Academic Professionals.</li>
                     </ul>
 
-                    <p><em>Interdisciplinary collaboration:</em> The team merged data science (embeddings, vector DBs, LLMs) with conservation science (STAR metric, IUCN threat data, case studies).</p>
+                    <p><em>Interdisciplinary collaboration:</em> The team merged data science (embeddings, vector DBs, LLMs) with conservation science (IUCN threat data, case studies).</p>
                 </div>
             </div>
 
@@ -212,7 +212,7 @@
                     <h4>Project Goals</h4>
                     <ul>
                         <li>Use LLMs + semantic search to organize and retrieve conservation solutions.</li>
-                        <li>Build a pipeline that evaluates outputs using the STAR metric.</li>
+                        <li>Build a pipeline that evaluates outputs.</li>
                         <li>Produce a reproducible prototype and documentation for CXL integration.</li>
                     </ul>
                 </div>
@@ -220,14 +220,14 @@
                 <div>
                     <h4>Timeline (Spring → Summer)</h4>
                     <p><span class="badge">Spring</span> Proposal, literature review, prompt design, data scoping.</p>
-                    <p><span class="badge">Summer</span> Embeddings & FAISS setup, RAG pipeline, STAR evaluation prompts, case study (precision agriculture), testing, and demo.</p>
+                    <p><span class="badge">Summer</span> Embeddings & FAISS setup, RAG pipeline, evaluation prompts, case study (precision agriculture), testing, and demo.</p>
                 </div>
             </div>
 
             <h4>Key research questions</h4>
             <ul>
                 <li>How can AI organize conservation solutions efficiently and transparently?</li>
-                <li>How can STAR metric components be integrated into prompts to produce ranked outputs for places + threats?</li>
+                <li>How can evaluation prompts be integrated into prompts to produce ranked outputs for places + threats?</li>
                 <li>How well does the pipeline perform on a case study (precision agriculture) compared to domain expectations?</li>
             </ul>
         </div>
@@ -252,12 +252,12 @@
 
             <h3>LLM integration & prompt engineering</h3>
             <p>
-                A Retrieval-Augmented Generation (RAG) pipeline uses a reformulation prompt (to create standalone questions from chat history), a retriever (FAISS), and a document-combining chain to feed retrieved context into the LLM with concise answer constraints. Special prompts were built to compute / assemble STAR metric inputs for each candidate solution.
+                A Retrieval-Augmented Generation (RAG) pipeline uses a reformulation prompt (to create standalone questions from chat history), a retriever (FAISS), and a document-combining chain to feed retrieved context into the LLM with concise answer constraints. Special prompts were built to compute / assemble evalutation prompt inputs for each candidate solution.
             </p>
 
             <h3>System architecture (visual)</h3>
             <p class="small-note">
-                Visual: <em>User query → reformulation → FAISS retriever → LLM (with retrieved contexts + STAR prompts) → scored outputs → ranked solutions.</em>
+                Visual: <em>User query → reformulation → FAISS retriever → LLM (with retrieved contexts) → scored outputs → ranked solutions.</em>
             </p>
             <p class="small-note">You can replace this with an SVG/diagram image in the final site.</p>
         </div>
@@ -273,12 +273,12 @@
             <ul>
                 <li>Configured FAISS index and embedding pipeline.</li>
                 <li>Built a RAG pipeline (reformulation prompt + retrieval + LLM answer chain) and tested with precision agriculture case queries.</li>
-                <li>Created prompts and scaffolding to compute STAR metric components per candidate solution (needs IUCN species-per-location and %restorable-AOH data to fully compute).</li>
+                <li>Created prompts and scaffolding to compute evaluation prompt inputs per candidate solution (needs IUCN species-per-location and %restorable-AOH data to fully compute).</li>
             </ul>
 
             <h3>Case study — Precision Agriculture</h3>
             <p>
-                Example: Query — "Which precision agriculture interventions reduce nutrient runoff and benefit freshwater species?" → Pipeline retrieves intervention studies, summarizes the evidence (reduction in fertilizer use, measured water quality outcomes), and estimates STAR-related contributions based on available metadata.
+                Example: Query — "Which precision agriculture interventions reduce nutrient runoff and benefit freshwater species?" → Pipeline retrieves intervention studies, summarizes the evidence (reduction in fertilizer use, measured water quality outcomes), and estimates contributions based on available metadata.
             </p>
 
             <h3>Visuals & demos</h3>
@@ -286,10 +286,10 @@
             <ol>
                 <li>FAISS index stats / embedding counts (e.g., number of documents & chunks)</li>
                 <li>Example RAG query + retrieved contexts</li>
-                <li>LLM answer with STAR metric breakdown</li>
             </ol>
-            <p class="small-note placeholder">REPLACE_WITH_SCREENSHOTS: Add screenshots from your local runs or notebook outputs.</p>
 
+            <img class="hero-image" src="demo.png" alt="Animals; global biodiversity" />
+            
             <h3>Lessons learned</h3>
             <ul>
                 <li>Chunking and overlap size strongly affect retrieval quality — debugged during summer (your note: only 4 chunks were being returned; need to inspect embed pipeline).</li>
@@ -322,7 +322,7 @@
 
             <h3>Conservation impact</h3>
             <p>
-                Integrating the pipeline with ESI can accelerate identification of high-impact interventions, inform funding priorities, and help practitioners scale tested solutions with localized STAR-based impact estimates.
+                Integrating the pipeline with ESI can accelerate identification of high-impact interventions, inform funding priorities, and help practitioners scale tested solutions with localized impact estimates.
             </p>
         </div>
     </section>
@@ -378,7 +378,7 @@
                 <div>
                     <h3>Next steps for CXL</h3>
                     <ol>
-                        <li>Review prototype outputs and STAR evaluation prompts.</li>
+                        <li>Review prototype outputs and evaluation prompts.</li>
                         <li>Provide access to IUCN / spatial species data for automated scoring.</li>
                         <li>Define front-end requirements and user personas for the ESI dashboard.</li>
                     </ol>
